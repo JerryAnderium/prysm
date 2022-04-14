@@ -20,3 +20,5 @@ before_install:
 
 script:
   - docker-compose --env-file .env.stg up -d postgres_db44 && docker-compose --env-file .env.stg up -d web44
+
+  #change
