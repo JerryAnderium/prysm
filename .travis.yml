@@ -16,9 +16,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
   - docker network create -d bridge our-library-net
-  - docker build -t my-django-image44:2.0.0 .
+  - docker build -t my-django-image12:2.0.0 .
 
 script:
-  - docker-compose --env-file .env.stg up -d postgres_db44 && docker-compose --env-file .env.stg up -d web44
-
-  #change
+  - docker-compose --env-file .env.stg up -d postgres_db44 && docker-compose --env-file .env.stg up -d web12
