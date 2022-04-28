@@ -1,5 +1,7 @@
 # Django-and-Django-REST-Framework
 
+[![Build Status](https://app.travis-ci.com/JerryAnderium/rockstars.svg?branch=main)](https://app.travis-ci.com/JerryAnderium/rockstars)
+
 ## Setup
 ### Installing docker compose
 

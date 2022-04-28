@@ -1,6 +1,14 @@
 from rest_framework import viewsets
 from rest_framework import permissions
 from library.books.serializers import *
+import base64
+from rest_framework.response import Response
+
+class ThingViewSet(viewsets.ModelViewSet):
+    queryset = Thing.objects.all().order_by('id')
+    serializer_class = ThingSerializer
+    permission_classes = []
+
 
 class AuthorViewSet(viewsets.ModelViewSet):
     """

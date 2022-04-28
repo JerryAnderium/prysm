@@ -4,6 +4,7 @@ from django.urls import path, include
 
 router = routers.DefaultRouter()
 router.register(r'author', views.AuthorViewSet)
+router.register(r'thing', views.ThingViewSet)
 router.register(r'booksauthor', views.BooksAuthorsViewSet)
 router.register(r'publisher', views.PublisherViewSet)
 router.register(r'genre', views.GenreViewSet)
