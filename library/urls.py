@@ -38,6 +38,6 @@ urlpatterns += [
     path('admin/', admin.site.urls),
     path('api_auth/', include('rest_framework.urls')),
     path('users/', include('library.users.urls')),
-    path('songs/', include('library.books.urls')),
+    # path('songs/', include('library.songs.urls')),
 ]
 

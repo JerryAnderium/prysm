@@ -1,138 +1,158 @@
 import graphene
-from graphene_django import DjangoObjectType
-from graphene.types.field import Field
-from library.books.models import *
+# from graphene_django import DjangoObjectType
+# from graphene.types.field import Field
+# from library.songs.models import *
 
-class AuthorType(DjangoObjectType):
-	class Meta:
-		model = Author
-		fields = ('id', 'name', 'last_name',)
+# class ArtistType(DjangoObjectType):
+# 	class Meta:
+# 		model = Artist
+# 		fields = ('id', 'name', 'nationality', 'top1', 'top2', 'top3', 'top4', 'top5', 'albums')
 
-class BookType(DjangoObjectType):
-	class Meta:
-		model = Book
-		fields = '__all__'
+# class SongType(DjangoObjectType):
+# 	class Meta:
+# 		model = Song
+# 		fields = '__all__'
 
-class BookQuery(graphene.ObjectType):
-	all_authors = graphene.List(AuthorType)
-	book_by_name = graphene.Field(BookType, name=graphene.String(required=True))
-	#books_by_author_id = graphene.List(AuthorsType, author_id=graphene.Int(required=True))
+# class SongQuery(graphene.ObjectType):
+	
+# 	all_artists = graphene.List(ArtistType, first=graphene.Int(), skip=graphene.Int())
+# 	song_by_name = graphene.Field(SongType, name=graphene.String(required=True))
 
-	def resolve_all_authors(root, info):
-		return Author.objects.all()
+# 	def resolve_all_artists(root, info, first = None, skip = None):
+# 		from django.contrib.auth.middleware import get_user
+# 		from graphql_jwt.utils import get_payload, get_user_by_payload
 
-	def resolve_book_by_name(root, info, name):
-		try:
-			return Book.objects.get(name=name)
-		except Book.DoesNotExist:
-			return None
+# 		context = info.context
 
-class UpsertAuthorMutation(graphene.Mutation):
-	class Arguments:
-		# The input arguments for this mutation
-		id = graphene.ID()
-		name = graphene.String(required=True)
-		last_name = graphene.String()
+# 		print('info',dir(context))
+		
+# 		user = info.context.user
+# 		print('IS AUTHENTICATED? ', user.is_authenticated)
+		
+# 		if not user.is_authenticated:
+# 			raise Exception("Authentication credentials were not provided")
 
-	# The class attributes define the response of the mutation
-	author = graphene.Field(AuthorType)
+# 		artists = Artist.objects.all()
+# 		if skip is not None:
+# 			artists = artists[:skip]
+# 		if first is not None:
+# 			artists = artists[first:]
 
-	@classmethod
-	def mutate(cls, root, info, name, last_name, id = None):
-		author = None
-		if id is not None:
-			author = Author.objects.get(pk=id)
-			author.name = name
-			author.last_name = last_name
-			author.save()
-		else:
-			author = Author.objects.create(name=name, last_name=last_name)
-			author.save()
-		# Notice we return an instance of this mutation
-		return UpsertAuthorMutation(author=author)
+# 		return artists
 
-class DeleteAuthorMutation(graphene.Mutation):
-    ok = graphene.Boolean()
+# 	def resolve_song_by_name(root, info, name):
+# 		try:
+# 			return Song.objects.get(name=name)
+# 		except Song.DoesNotExist:
+# 			return None
 
-    class Arguments:
-        id = graphene.ID()
+# class UpsertArtistsMutation(graphene.Mutation):
+# 	class Arguments:
+# 		id = graphene.ID()
+# 		name = graphene.String(required=True)
 
-    @classmethod
-    def mutate(cls, root, info, **kwargs):
-        author = Author.objects.get(pk=kwargs["id"])
-        author.delete()
-        return cls(ok=True)
+# 	artist = graphene.Field(ArtistType)
+# 	status = graphene.String()
 
-class AuthorsInput(graphene.InputObjectType):
-	id = graphene.ID()
-	name = graphene.String(required=True)
-	last_name = graphene.String()
+# 	@classmethod
+# 	def mutate(cls, root, info, name, id = None):
+# 		artist = None
+# 		if id is not None:
+# 			try:
+# 				artist = Artist.objects.get(pk=id)
+# 				artist.name = name
+# 				artist.nationality = nationality
+# 				artist.top1 = top1
+# 				artist.top2 = top2
+# 				artist.top3 = top3
+# 				artist.top4 = top4
+# 				artist.top5 = top5
+# 				artist.albums = albums
+# 				artist.save()
+# 			except Artist.DoesNotExist:
+# 				return cls( song = None, status = 'Artist not found')
+# 		else:
+# 			artist = Artist.objects.create(name=name)
+# 			artist.save()
+# 		return UpsertArtistMutation(artist=artist)
 
-class UpsertBookMutation(graphene.Mutation):
-	class Arguments:
-		# The input arguments for this mutation
-		id = graphene.ID()
-		name = graphene.String(required=True)
-		publish_year = graphene.Int()
-		pages = graphene.Int(required=True, description='Number of pages')
-		price = graphene.Decimal(required=True, description='Average price')
-		created_at = graphene.DateTime()
-		updated_at = graphene.DateTime()
-		authors = graphene.List(AuthorsInput)
-	# books_authors = models.OneToOneField(Author, through='BookAuthor')
+# class DeleteArtistMutation(graphene.Mutation):
+#     ok = graphene.Boolean()
 
-	# The class attributes define the response of the mutation
-	book = graphene.Field(BookType)
+#     class Arguments:
+#         id = graphene.ID()
 
-	@classmethod
-	def mutate(cls, root, info, **kwargs):
-		l_authors = []
-		if 'authors' in kwargs:
-			authors = kwargs['authors']
-			for author in authors:
-				aux = None
-				if 'id' in author:
-					aux = Author.objects.get(pk=author['id'])
-					aux.name = author['name']
-					aux.last_name = author['last_name']
-					aux.save()
-				else:
-					aux = Author.objects.create(name=author['name'], last_name=author['last_name'])
-					aux.save()
-				l_authors.append(aux)
+#     @classmethod
+#     def mutate(cls, root, info, **kwargs):
+#         artist = Artist.objects.get(pk=kwargs["id"])
+#         artist.delete()
+#         return cls(ok=True)
 
-		#kwargs['authors'] = l_authors
-		#print('KWARGS:',kwargs)
-		kwargs.pop('authors')
-		if 'id' in kwargs:
-			book = Book.objects.get(pk=kwargs['id'])
-			book.name = kwargs['name']
-			book.pages = kwargs['pages']
-			book.price = kwargs['price']
-			if 'publish_year' in kwargs:
-				book.publish_year = kwargs['publish_year']
-			if 'created_at' in kwargs:
-				book.created_at = kwargs['created_at']
-			if 'updated_at' in kwargs:
-				book.updated_at = kwargs['updated_at']
-			#book.authors = l_authors
-			book.save()
-		else:
-			book = Book.objects.create(**kwargs)
-			book.save()
-			for author in l_authors:
-				books_authors = BooksAuthors.objects.create(book=book, author=author)
-				books_authors.save()
-		# Notice we return an instance of this mutation
-		return UpsertBookMutation(book = book)
+# class Object1Input(graphene.InputObjectType):
+# 	id = graphene.ID()
+# 	name = graphene.String()
 
-class Query(BookQuery, graphene.ObjectType):
-	pass
+# class ArtistsInput(graphene.InputObjectType):
+# 	id = graphene.ID()
+# 	name = graphene.String(required=True)
 
-class Mutation(graphene.ObjectType):
-	upsert_author = UpsertAuthorMutation.Field()
-	delete_author = DeleteAuthorMutation.Field()
-	upsert_book = UpsertBookMutation.Field()
-	#update_book = BookMutation.Field()
+# class UpsertSongMutation(graphene.Mutation):
+# 	class Arguments:
+# 		id = graphene.ID()
+# 		name = graphene.String(required=True)
+# 		price = graphene.Decimal(required=True, description='Average price')
+# 		created_at = graphene.DateTime()
+# 		updated_at = graphene.DateTime()
+# 		artists = graphene.List(ArtistsInput)
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+# 	song = graphene.Field(SongType)
+# 	status = graphene.String()
+
+# 	@classmethod
+# 	def mutate(cls, root, info, **kwargs):
+
+# 		print('info:',dir(info.context))
+# 		print('headers:',info.context.headers)
+
+# 		l_artists = []
+# 		if 'artists' in kwargs:
+# 			artists = kwargs.pop('artists')
+# 			for artist in artists:
+# 				aux = None
+# 				if 'id' in artist:
+# 					try:
+# 						aux = Artist.objects.get(pk=artist['id'])
+# 						aux.name = artist['name']
+# 						aux.save()
+# 					except Artist.DoesNotExist:
+# 						return cls( status = 'Artist not found', song = None)
+# 				else:
+# 					aux = Artist.objects.create(name=artist['name'])
+# 					aux.save()
+# 				l_artists.append(aux)
+		
+# 		if 'id' in kwargs:
+# 			song = None
+# 			try:
+# 				song = Song.objects.get(pk=kwargs['id'])
+# 				song.name = kwargs['name']
+# 				song.price = kwargs['price']
+# 				if 'created_at' in kwargs:
+# 					song.created_at = kwargs['created_at']
+# 				if 'updated_at' in kwargs:
+# 					song.updated_at = kwargs['updated_at']
+# 				song.save()
+# 			except Song.DoesNotExist:
+# 				return cls( song = None, status = 'Song not found')
+# 		else:
+# 			song = Song.objects.create(**kwargs)
+# 			song.save()
+# 			for artist in l_artists:
+# 				songs_artists = SongsArtists.objects.create(song=song, artist=artist)
+# 				songs_artists.save()
+# 		return UpsertSongMutation(song = song, status = 'ok')
+
+# class SongMutation(graphene.ObjectType):
+# 	upsert_artist = UpsertArtistMutation.Field()
+# 	delete_artist = DeleteArtistMutation.Field()
+# 	upsert_song = UpsertSongMutation.Field()

@@ -60,11 +60,12 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
     'graphene_django',
-    'library.editorial',
-    'library.users',
     'library.books',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'library.songs',
+    'library.users',
+
 ]
 
 MIDDLEWARE = [
@@ -181,5 +182,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GRAPHENE = {
-    "SCHEMA": "library.books.schema.schema"
+    "SCHEMA": "library.songs.schema.schema"
 }
