@@ -8,7 +8,7 @@ services:
       POSTGRES_DB: "${PSQL_DB}"
       POSTGRES_USER: "${PSQL_USER}"
     ports:
-      - "10${PORT}:55${PORT}"
+      - "10012:55${PORT}"
     volumes:
       - "${POSTGRES_VOLUME_PATH}:/usr/src/postgres"
     networks:
