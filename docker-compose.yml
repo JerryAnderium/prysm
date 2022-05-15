@@ -37,6 +37,19 @@ services:
     networks:
       - our-library-net
 
+  front12:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    command: sh -c "yarn install && yarn run start"
+    container_name: "react${PORT}"
+    volumes:
+      - "${REACT_VOLUME_PATH}:/prysm"
+    ports:
+      - "11012:11012"
+    networks:
+      - our-library-net
+
 networks:
   our-library-net:
     external: true
