@@ -1,2 +1,5 @@
 */migrations/*
+migrations/
 !*/migrations/__init__.py
+node_modules/
+node_modules/*
