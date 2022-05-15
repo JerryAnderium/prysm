@@ -5,11 +5,11 @@ FROM python:3.10.4-bullseye
 ENV PYTHONUNBUFFERED 1
 # create root directory for our project in the container
 RUN mkdir /usr/src/django/
-RUN mkdir /usr/src/django/library
-# Set the working directory to /library
-WORKDIR /usr/src/django/library
-# Copy the current directory contents into the container at /library
-ADD . /usr/src/django/library
+RUN mkdir /usr/src/django/backend
+# Set the working directory to /backend
+WORKDIR /usr/src/django/backend
+# Copy the current directory contents into the container at /backend
+ADD . /usr/src/django/backend
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt

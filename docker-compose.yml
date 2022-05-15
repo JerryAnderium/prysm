@@ -31,7 +31,7 @@ services:
       JWT_TOKEN_TIME: "${JWT_TOKEN_TIME}"
     volumes:
     # "RUTA/DEL/SERVIDOR:RUTA/DENTRO/DEL/CONTENEDOR"
-      - "${DJANGO_VOLUME_PATH}:/usr/src/django/library"
+      - "${DJANGO_VOLUME_PATH}:/usr/src/django/backend"
     ports:
       - "90${PORT}:80${PORT}"
     networks:

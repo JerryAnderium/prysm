@@ -1,5 +1,5 @@
 import pytest
-from library.books.models import *
+from backend.books.models import *
 
 @pytest.mark.django_db
 def test_author_name():
