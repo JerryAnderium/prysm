@@ -4,6 +4,7 @@ from pathlib import Path
 import django
 from django.utils.encoding import force_str 
 django.utils.encoding.force_text = force_str
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,11 +50,11 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
     'graphene_django',
-    # 'backend.books',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'backend.songs',
     'backend.users',
+    'rest_framework_swagger',
 
 ]
 
@@ -70,6 +71,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'backend.urls'
 
+LOGIN_REDIRECT_URL = '/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -83,6 +86,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
     },
 ]
 
@@ -111,7 +116,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
     'DEFAULT_PERMISSION_CLASSES': [
         #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'  ,
 }
 
 from datetime import timedelta

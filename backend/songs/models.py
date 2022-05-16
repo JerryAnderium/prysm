@@ -43,6 +43,7 @@ class Song(models.Model):
   song_album = models.ForeignKey('Album', related_name='songalbum', on_delete=models.DO_NOTHING, default=None)
   plays = models.IntegerField(null=True)
   rank = models.IntegerField(null=True)
+  file = models.FileField(upload_to='songs/', null=True)
   preview = models.FileField(upload_to='preview/', null=True)
 
   class Meta:
